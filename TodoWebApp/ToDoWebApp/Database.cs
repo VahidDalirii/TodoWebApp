@@ -30,20 +30,10 @@ namespace ToDoWebApp
             collection.InsertOne(newTodo);
         }
 
-        /// <summary>
-        /// Gets all todos from db 
-        /// </summary>
-        /// <returns>A list of all todos</returns>
-        public List<Todo> GetTodos()
+        internal List<Todo> GetTodosForThisUser(string user)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(td => true).ToList();
-        }
-
-        internal List<Todo> GetTodosForThisUser(string name)
-        {
-            var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(tds => tds.User==name).ToList();
+            return collection.Find(tds => tds.User==user).ToList();
         }
 
         /// <summary>
