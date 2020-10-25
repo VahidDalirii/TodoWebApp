@@ -130,6 +130,11 @@ namespace ToDoWebApp.Controllers
             return Redirect($"/Home");
         }
 
+        /// <summary>
+        /// Shows todo and asks if user is sure to delete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Delete(string id)
         {
             return View(_helper.GetTodoById(id));
@@ -148,6 +153,10 @@ namespace ToDoWebApp.Controllers
             return Redirect("/Home");
         }
 
+        /// <summary>
+        /// Opens a page to get premium account
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Premium()
         {
             Account account = _helper.GetAccount(User.Identity.Name);
@@ -162,12 +171,17 @@ namespace ToDoWebApp.Controllers
             }
             else if (account.IsPremium==true)
             {
-                TempData["textmsg"] = "<script>alert('You already are a premium user');</script>";
+                TempData["textmsg"] = "<script>alert('You already have a premium account');</script>";
                 return Redirect("/Home");
             }
             return Redirect("/Home");
         }
 
+        /// <summary>
+        /// Updates account to premium
+        /// </summary>
+        /// <param name="payment"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Premium(Payment payment)
         {
@@ -176,6 +190,10 @@ namespace ToDoWebApp.Controllers
             return Redirect("/Home");
         }
 
+        /// <summary>
+        /// Shows about page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult About()
         {
             return View();
