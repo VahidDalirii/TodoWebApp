@@ -12,6 +12,7 @@ namespace ToDoWebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        Helper _helper = new Helper();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -26,8 +27,7 @@ namespace ToDoWebApp.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                Helper helper = new Helper();
-                var todos = helper.GetTodosForThisUser(User.Identity.Name);
+                var todos = _helper.GetTodosForThisUser(User.Identity.Name);
 
                 return View(todos);
             }
@@ -45,19 +45,18 @@ namespace ToDoWebApp.Controllers
         [HttpPost]
         public IActionResult Index(string submit, string priority, DateTime date)
         {
-            Helper helper = new Helper();
 
             if (submit.Equals("Sort"))
             {
-                return View(helper.GetTodosByPriority(User.Identity.Name, priority));
+                return View(_helper.GetTodosByPriority(User.Identity.Name, priority));
             }
             else if (submit.Equals("Filter") && !string.IsNullOrEmpty(priority))
             {
-                return View(helper.GetFilteredTodos(User.Identity.Name, priority));
+                return View(_helper.GetFilteredTodos(User.Identity.Name, priority));
             }
             else if (submit.Equals("Show"))
             {
-                return View(helper.GetTodosWithDate(User.Identity.Name, date));
+                return View(_helper.GetTodosWithDate(User.Identity.Name, date));
             }
             return Redirect("/Home");
         }
@@ -89,13 +88,12 @@ namespace ToDoWebApp.Controllers
         [HttpPost]
         public IActionResult Create(Todo todo)
         {
-            Helper helper = new Helper();
             if (todo.Date.Date < DateTime.Today)
             {
                 TempData["textmsg"] = "<script>alert('You can not choose a day befor today');</script>";
                 return View();
             }
-            helper.SaveTodo(todo);
+            _helper.SaveTodo(todo);
 
             return Redirect("/Home");
         }
@@ -107,8 +105,7 @@ namespace ToDoWebApp.Controllers
         /// <returns>returns an object as todo</returns>
         public IActionResult Edit(string id)
         {
-            Helper helper = new Helper();
-            return View(helper.GetTodoById(id));
+            return View(_helper.GetTodoById(id));
         }
 
         /// <summary>
@@ -122,23 +119,20 @@ namespace ToDoWebApp.Controllers
         [HttpPost]
         public IActionResult Edit(string id, string title, string description, string date, string priority)
         {
-            Helper helper = new Helper();
             if (DateTime.Parse(date).Date < DateTime.Today)
             {
                 TempData["textmsg"] = "<script>alert('You can not choose a day befor today');</script>";
-                return View(helper.GetTodoById(id));
+                return View(_helper.GetTodoById(id));
             }
 
-            helper.EditTodo(id, title, description, date, priority);
+            _helper.EditTodo(id, title, description, date, priority);
 
             return Redirect($"/Home");
         }
 
         public IActionResult Delete(string id)
         {
-            Helper helper = new Helper();
-
-            return View(helper.GetTodoById(id));
+            return View(_helper.GetTodoById(id));
         }
 
         /// <summary>
@@ -149,9 +143,36 @@ namespace ToDoWebApp.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(string id)
         {
-            Helper helper = new Helper();
-            helper.DeleteTodoById(id);
+            _helper.DeleteTodoById(id);
 
+            return Redirect("/Home");
+        }
+
+        public IActionResult Premium()
+        {
+            Account account = _helper.GetAccount(User.Identity.Name);
+            if (User.Identity.IsAuthenticated && account.IsPremium == false)
+            {
+                return View();
+            }
+            else if(!User.Identity.IsAuthenticated)
+            {
+                TempData["textmsg"] = "<script>alert('You have to log in first. Log in if you have an account, otherwise register yourself');</script>";
+                return Redirect("/Home");
+            }
+            else if (account.IsPremium==true)
+            {
+                TempData["textmsg"] = "<script>alert('You already are a premium user');</script>";
+                return Redirect("/Home");
+            }
+            return Redirect("/Home");
+        }
+
+        [HttpPost]
+        public IActionResult Premium(Payment payment)
+        {
+            _helper.UpdatePremium(User.Identity.Name);
+            TempData["textmsg"] = "<script>alert('Congratulations! You are now a Premium user. Now you can use all To Do apps functions and create how much To Dos you want');</script>";
             return Redirect("/Home");
         }
 

@@ -10,7 +10,8 @@ namespace ToDoWebApp
 {
     public class Database
     {
-        private const string TODO_COLLECTION = "Todo";
+        private const string TODO_COLLECTION = "Todos";
+        private const string ACCOUNT_COLLECTION = "Accounts";
         private readonly IMongoDatabase db;
 
         public Database(string dbName = "Todo-list")
@@ -65,6 +66,30 @@ namespace ToDoWebApp
                 .Set("Priority", priority);
 
             collection.UpdateOne(filter, updateName);
+        }
+
+        internal void UpdatePremium(string user)
+        {
+            var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
+
+            var filter = Builders<Account>.Filter.Eq("User", user);
+
+            var updatePremium = Builders<Account>.Update
+                .Set("IsPremium", true);
+
+            collection.UpdateOne(filter, updatePremium);
+        }
+
+        internal Account GetAccount(string user)
+        {
+            var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
+            return collection.Find(acc => acc.User == user).First();
+        }
+
+        internal void CreateAccount(Account account)
+        {
+            var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
+            collection.InsertOne(account);
         }
 
         internal List<Todo> GetTodosWithDate(string userName,DateTime date)

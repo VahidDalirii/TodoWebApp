@@ -2,11 +2,13 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<head>
-    <link rel="stylesheet" href="@Url.Content("~/css/Site.css")" type="text/css" />
-</head>
+@if (TempData["textmsg"] != null)
+{
+    @Html.Raw(TempData["textmsg"])
+}
 
 <h1>To Do 1 Web Application</h1>
 
@@ -97,7 +99,7 @@ else
     <div class="text-center">
 
         <p> You have to <a href="~/Identity/Account/Login">LOG IN</a> to see your To Dos.</p>
-        <p> If you don't have an account, <a href="~/Identity/Account/Register">Register</a> your self.</p>
+        <p> If you don't have an account, <a href="~/Identity/Account/Register">Register</a> yourself.</p>
     </div>
 }
 

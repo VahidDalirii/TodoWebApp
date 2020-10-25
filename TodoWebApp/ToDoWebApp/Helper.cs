@@ -24,7 +24,7 @@ namespace ToDoWebApp
 
         internal List<Todo> GetFilteredTodos(string userName, string priority)
         {
-            return db.FilterTodos(userName,priority);
+            return db.FilterTodos(userName, priority);
         }
 
         internal Todo GetTodoById(string id)
@@ -57,7 +57,28 @@ namespace ToDoWebApp
 
         internal List<Todo> GetTodosWithDate(string userName, DateTime date)
         {
-            return db.GetTodosWithDate(userName , date);
+            return db.GetTodosWithDate(userName, date);
+        }
+
+        internal void CreateAccount(string user)
+        {
+            Account account = new Account()
+            {
+                User = user,
+                IsPremium = false
+            };
+
+            db.CreateAccount(account);
+        }
+
+        internal void UpdatePremium(string user)
+        {
+            db.UpdatePremium(user);
+        }
+
+        internal Account GetAccount(string user)
+        {
+            return db.GetAccount(user);
         }
     }
 }
