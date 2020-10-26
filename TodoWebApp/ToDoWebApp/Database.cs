@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using ToDoWebApp.Models;
 
@@ -16,8 +17,16 @@ namespace ToDoWebApp
 
         public Database(string dbName = "Todo-list")
         {
-            MongoClient client = new MongoClient();
-            db = client.GetDatabase(dbName);
+            //MongoClient client = new MongoClient();
+            //db = client.GetDatabase(dbName);
+            string connectionString =
+  @"mongodb://mongodb-todowebapp:6yyS6hY0vFESZMWykwlTKb983vyR36lVuc9T8EH5lhzusUQzUXqqHV99njNY0I2hYNFqBwRwC7EFBOYoxMaoMA==@mongodb-todowebapp.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@mongodb-todowebapp@";
+            MongoClientSettings settings = MongoClientSettings.FromUrl(
+              new MongoUrl(connectionString)
+            );
+            settings.SslSettings =
+              new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
+            var mongoClient = new MongoClient(settings);
         }
 
         /// <summary>
@@ -33,7 +42,7 @@ namespace ToDoWebApp
         internal List<Todo> GetTodosForThisUser(string user)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(tds => tds.User==user).ToList();
+            return collection.Find(tds => tds.User == user).ToList();
         }
 
         /// <summary>
@@ -82,10 +91,10 @@ namespace ToDoWebApp
             collection.InsertOne(account);
         }
 
-        internal List<Todo> GetTodosWithDate(string userName,DateTime date)
+        internal List<Todo> GetTodosWithDate(string userName, DateTime date)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(td => td.User==userName && td.Date == date).ToList();
+            return collection.Find(td => td.User == userName && td.Date == date).ToList();
         }
 
         /// <summary>
@@ -96,7 +105,7 @@ namespace ToDoWebApp
         internal List<Todo> FilterTodos(string userName, string priority)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(td => td.User== userName && td.Priority == priority).ToList();
+            return collection.Find(td => td.User == userName && td.Priority == priority).ToList();
         }
 
         /// <summary>

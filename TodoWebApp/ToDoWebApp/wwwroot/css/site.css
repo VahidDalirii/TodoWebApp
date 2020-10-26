@@ -64,9 +64,13 @@ h1 {
     .table tr:nth-child(even) {
         background-color: #f2f2f2;
     }
+    .table tr:nth-child(odd) {
+        background-color: #7c7c7c;
+    }
 
     .table tr:hover {
-        background-color: #ddd;
+        background-color: #b90c0c;
+        color:white;
     }
 
     .table th {
@@ -133,9 +137,11 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    background-color: #8abcf8;
 }
 
 .footer {
+    background-color:white;
     position: absolute;
     bottom: 0;
     width: 100%;
