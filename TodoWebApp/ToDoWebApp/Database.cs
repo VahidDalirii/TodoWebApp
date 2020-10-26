@@ -73,7 +73,7 @@ namespace ToDoWebApp
         internal Account GetAccount(string user)
         {
             var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
-            return collection.Find(acc => acc.User == user).First();
+            return collection.Find(acc => acc.User == user).FirstOrDefault();
         }
 
         internal void CreateAccount(Account account)
@@ -107,7 +107,7 @@ namespace ToDoWebApp
         internal Todo GetTodoById(ObjectId id)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(td => td.Id == id).First();
+            return collection.Find(td => td.Id == id).FirstOrDefault();
         }
 
         /// <summary>
