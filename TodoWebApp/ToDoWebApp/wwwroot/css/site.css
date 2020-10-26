@@ -81,8 +81,8 @@ h1 {
 }
 
 .about-image{
-    width:50%;
-    height:50%;
+    max-width:300px;
+    max-height:300px;
 }
 /* Sticky footer styles
 -------------------------------------------------- */

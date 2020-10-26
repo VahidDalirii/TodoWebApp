@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Premium</h1>
+<h1>Get Premium Version</h1>
 
 <h4>The total cost for using this app is 150 SEK</h4>
 <div class="form-group">
@@ -19,26 +19,26 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CardNumber" class="control-label">Card Number</label>
-                <input asp-for="CardNumber" class="form-control" />
+                <input asp-for="CardNumber" required class="form-control" />
                 <span asp-validation-for="CardNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ExpiryDate" class="control-label">Expiry Date</label>
-                <input asp-for="ExpiryDate" class="form-control" />
+                <input asp-for="ExpiryDate" required class="form-control" />
                 <span asp-validation-for="ExpiryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CVV" class="control-label"></label>
-                <input asp-for="CVV" class="form-control" />
+                <input asp-for="CVV" required class="form-control" />
                 <span asp-validation-for="CVV" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NameOnCard" class="control-label">Name On Card</label>
-                <input asp-for="NameOnCard" class="form-control" />
+                <input asp-for="NameOnCard" required class="form-control" />
                 <span asp-validation-for="NameOnCard" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
+                <input type="submit" id="Submit" value="Submit" class="btn btn-primary" />
             </div>
         </form>
     </div>
