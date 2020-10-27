@@ -47,7 +47,7 @@ namespace ToDoWebApp.Controllers
             }
             else if(!accountExists && submit == "Login")
             {
-                TempData["textmsg"] = "<script>alert('You have to register yourself. Your Account is not registred');</script>";
+                TempData["textmsg"] = "<script>alert('You have to register yourself. Your Account is not registred.');</script>";
                 return RedirectToAction("Login", "Account");
             }
             else if(!accountExists && submit == "Register")
@@ -68,7 +68,7 @@ namespace ToDoWebApp.Controllers
             }
             else if (accountExists && submit=="Register")
             {
-                TempData["textmsg"] = "<script>alert('You already have an account registred. You can Login');</script>";
+                TempData["textmsg"] = "<script>alert('You already have an account registred. You can Login.');</script>";
                 return RedirectToAction("Login", "Account");
             }
 
