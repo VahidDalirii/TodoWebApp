@@ -15,18 +15,22 @@ namespace ToDoWebApp
         private const string ACCOUNT_COLLECTION = "Accounts";
         private readonly IMongoDatabase db;
 
-        public Database(string dbName = "Todo-list")
+        public Database(string dbName = "ToDoWebAppDB")
         {
-            //MongoClient client = new MongoClient();
-            //db = client.GetDatabase(dbName);
-            string connectionString =
-  @"mongodb://mongodb-todowebapp:6yyS6hY0vFESZMWykwlTKb983vyR36lVuc9T8EH5lhzusUQzUXqqHV99njNY0I2hYNFqBwRwC7EFBOYoxMaoMA==@mongodb-todowebapp.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@mongodb-todowebapp@";
-            MongoClientSettings settings = MongoClientSettings.FromUrl(
-              new MongoUrl(connectionString)
-            );
-            settings.SslSettings =
-              new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
-            var mongoClient = new MongoClient(settings);
+            MongoClient client = new MongoClient("mongodb+srv://Vahid:Vahid26112@cluster0.yhcpv.mongodb.net/ToDoWebAppDB?retryWrites=true&w=majority");
+            db = client.GetDatabase(dbName);
+        }
+        
+        internal bool CheckIdAccountExists(Account account)
+        {
+            var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
+            List<Account> accounts = collection.Find(acc => true).ToList();
+            foreach (var acc in accounts)
+            {
+                if (acc.UserName.ToLower() == account.UserName.ToLower() && acc.Password.ToLower() == account.Password.ToLower())
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace ToDoWebApp
         internal List<Todo> GetTodosForThisUser(string user)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(tds => tds.User == user).ToList();
+            return collection.Find(tds => tds.User.ToLower() == user.ToLower()).ToList();
         }
 
         /// <summary>
@@ -71,7 +75,7 @@ namespace ToDoWebApp
         {
             var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
 
-            var filter = Builders<Account>.Filter.Eq("User", user);
+            var filter = Builders<Account>.Filter.Eq("UserName", user);
 
             var updatePremium = Builders<Account>.Update
                 .Set("IsPremium", true);
@@ -82,7 +86,7 @@ namespace ToDoWebApp
         internal Account GetAccount(string user)
         {
             var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
-            return collection.Find(acc => acc.User == user).FirstOrDefault();
+            return collection.Find(acc => acc.UserName.ToLower() == user.ToLower()).FirstOrDefault();
         }
 
         internal void CreateAccount(Account account)
@@ -94,7 +98,7 @@ namespace ToDoWebApp
         internal List<Todo> GetTodosWithDate(string userName, DateTime date)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(td => td.User == userName && td.Date == date).ToList();
+            return collection.Find(td => td.User.ToLower() == userName.ToLower() && td.Date == date).ToList();
         }
 
         /// <summary>
@@ -105,7 +109,7 @@ namespace ToDoWebApp
         internal List<Todo> FilterTodos(string userName, string priority)
         {
             var collection = db.GetCollection<Todo>(TODO_COLLECTION);
-            return collection.Find(td => td.User == userName && td.Priority == priority).ToList();
+            return collection.Find(td => td.User.ToLower() == userName.ToLower() && td.Priority == priority).ToList();
         }
 
         /// <summary>

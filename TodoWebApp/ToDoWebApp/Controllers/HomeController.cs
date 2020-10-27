@@ -29,6 +29,7 @@ namespace ToDoWebApp.Controllers
             {
                 var todos = _helper.GetTodosForThisUser(User.Identity.Name);
 
+
                 return View(todos);
             }
 

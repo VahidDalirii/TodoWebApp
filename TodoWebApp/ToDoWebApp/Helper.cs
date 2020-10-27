@@ -22,6 +22,11 @@ namespace ToDoWebApp
             return todos.OrderBy(p => Array.IndexOf(priorities, p.Priority)).ToList();
         }
 
+        internal bool CheckIfAccountExists(Account account)
+        {
+            return db.CheckIdAccountExists(account);
+        }
+
         internal List<Todo> GetFilteredTodos(string userName, string priority)
         {
             return db.FilterTodos(userName, priority);
@@ -60,14 +65,8 @@ namespace ToDoWebApp
             return db.GetTodosWithDate(userName, date);
         }
 
-        internal void CreateAccount(string user)
+        internal void CreateAccount(Account account)
         {
-            Account account = new Account()
-            {
-                User = user,
-                IsPremium = false
-            };
-
             db.CreateAccount(account);
         }
 

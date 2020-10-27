@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoWebApp", "ToDoWebApp\ToDoWebApp.csproj", "{EE39651A-8BA4-4FEF-8BE6-D4AE00440BB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoWebApp.AutomatedUITests", "ToDoWebApp.AutomatedUITests\ToDoWebApp.AutomatedUITests.csproj", "{84198A3F-1E7E-4BC1-9336-3A5EFCC042BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoWebApp.AutomatedUITests", "ToDoWebApp.AutomatedUITests\ToDoWebApp.AutomatedUITests.csproj", "{84198A3F-1E7E-4BC1-9336-3A5EFCC042BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
