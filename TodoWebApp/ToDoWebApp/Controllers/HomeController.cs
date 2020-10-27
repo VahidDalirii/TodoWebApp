@@ -94,6 +94,12 @@ namespace ToDoWebApp.Controllers
                 TempData["textmsg"] = "<script>alert('You can not choose a day befor today');</script>";
                 return View();
             }
+            var todos = _helper.GetTodosForThisUser(User.Identity.Name);
+            if (todos.Count >= 20)
+            {
+                TempData["textmsg"] = "<script>alert('You have reached to 20 saved tasks. You have to get premium version if you want to save more');</script>";
+                return Redirect("/Home");
+            }
             _helper.SaveTodo(todo);
 
             return Redirect("/Home");
@@ -160,21 +166,26 @@ namespace ToDoWebApp.Controllers
         /// <returns></returns>
         public IActionResult Premium()
         {
-            Account account = _helper.GetAccount(User.Identity.Name);
-            if (User.Identity.IsAuthenticated && account.IsPremium == false)
+            
+            if (User.Identity.IsAuthenticated )
             {
-                return View();
+                Account account = _helper.GetAccount(User.Identity.Name);
+                if (account.IsPremium == false)
+                {
+                    return View();
+                }
+                else
+                {
+                    TempData["textmsg"] = "<script>alert('You already have a premium account');</script>";
+                    return Redirect("/Home");
+                }
             }
             else if(!User.Identity.IsAuthenticated)
             {
                 TempData["textmsg"] = "<script>alert('You have to log in first. Log in if you have an account, otherwise register yourself');</script>";
                 return Redirect("/Home");
             }
-            else if (account.IsPremium==true)
-            {
-                TempData["textmsg"] = "<script>alert('You already have a premium account');</script>";
-                return Redirect("/Home");
-            }
+
             return Redirect("/Home");
         }
 
@@ -186,6 +197,16 @@ namespace ToDoWebApp.Controllers
         [HttpPost]
         public IActionResult Premium(Payment payment)
         {
+            if (payment.ExpiryDate<DateTime.Today)
+            {
+                TempData["textmsg"] = "<script>alert('You can not choose a day befor today');</script>";
+                return View();
+            }
+            if (payment.NameOnCard.Any(c => char.IsDigit(c)))
+            {
+                TempData["textmsg"] = "<script>alert('The name must contain only alpha characters ');</script>";
+                return View();
+            }
             _helper.UpdatePremium(User.Identity.Name);
             TempData["textmsg"] = "<script>alert('Congratulations! You are now a Premium user. Now you can use all To Do apps functions and create how much To Dos you want');</script>";
             return Redirect("/Home");

@@ -5,12 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if (TempData["textmsg"] != null)
+{
+    @Html.Raw(TempData["textmsg"])
+}
+
 <h1>Get Premium Version</h1>
 
 <h4>The total cost for using this app is 150 SEK</h4>
 <div class="form-group">
-     <p><label name="lblStudent" class="control-label" style="color:orangered"> check in the box if you are a student or pensioner, and you will receive a 50% discount </label><input type="checkbox" style="margin-left:10px"/></p>
-    
+    <p><label name="lblStudent" class="control-label" style="color:orangered"> check in the box if you are a student or pensioner, and you will receive a 50% discount </label><input type="checkbox" style="margin-left:10px" /></p>
+
 </div>
 <hr />
 <div class="row">
