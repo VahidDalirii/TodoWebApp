@@ -19,6 +19,16 @@ namespace ToDoWebApp.AutomatedUITests
         }
 
         [Fact]
+        public void Create_WhenExecuted_TestFails()
+        {
+            _driver.Navigate()
+                .GoToUrl("https://localhost:44345/Home/Create");
+
+            Assert.Equal("Test wrong title", _driver.Title);
+            Assert.Contains("It dosen't exists", _driver.PageSource);
+        }
+
+        [Fact]
         public void Create_WhenExecuted_ReturnsCreateView()
         {
             _driver.Navigate()
@@ -49,17 +59,17 @@ namespace ToDoWebApp.AutomatedUITests
         }
 
         [Fact]
-        public void Premium_WhenExecuted_ReturnsMessageToLogin()
+        public void Premium_WhenExecuted_ShouldPass()
         {
             //Log in first
             _driver.Navigate()
-               .GoToUrl("https://localhost:44345/Identity/Account/Login");
+               .GoToUrl("https://localhost:44345/Account/Login");
 
-            _driver.FindElement(By.Id("Email"))
-                .SendKeys("vahiddd@gmail.com");
+            _driver.FindElement(By.Id("UserName"))
+                .SendKeys("vahid.daliri87@gmail.com");
 
             _driver.FindElement(By.Id("Password"))
-                .SendKeys("Vahid!123");
+                .SendKeys("Vahid123");
 
             _driver.FindElement(By.Id("Login"))
                .Click();
@@ -79,13 +89,13 @@ namespace ToDoWebApp.AutomatedUITests
         {
             //Log in first
             _driver.Navigate()
-               .GoToUrl("https://localhost:44345/Identity/Account/Login");
+               .GoToUrl("https://localhost:44345/Account/Login");
 
-            _driver.FindElement(By.Id("Email"))
-                .SendKeys("vahiddd@gmail.com");
+            _driver.FindElement(By.Id("UserName"))
+                .SendKeys("vahid.daliri87@gmail.com");
 
             _driver.FindElement(By.Id("Password"))
-                .SendKeys("Vahid!123");
+                .SendKeys("Vahid123");
 
             _driver.FindElement(By.Id("Login"))
                .Click();
