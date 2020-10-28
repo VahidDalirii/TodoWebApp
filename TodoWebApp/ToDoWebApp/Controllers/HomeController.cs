@@ -221,6 +221,22 @@ namespace ToDoWebApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Shows Contact page
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Contact(string submit)
+        {
+            TempData["textmsg"] = "<script>alert('Your message sended successfully');</script>";
+            return Redirect("/Home");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
