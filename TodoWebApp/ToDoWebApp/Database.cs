@@ -15,12 +15,19 @@ namespace ToDoWebApp
         private const string ACCOUNT_COLLECTION = "Accounts";
         private readonly IMongoDatabase db;
 
-        public Database(string dbName = "ToDoWebAppDB")
+        public Database(string dbName = "ToDoWebApp")
         {
-            MongoClient client = new MongoClient("mongodb+srv://Vahid:Vahid26112@cluster0.yhcpv.mongodb.net/ToDoWebAppDB?retryWrites=true&w=majority");
+            MongoClient client = new MongoClient();
             db = client.GetDatabase(dbName);
         }
-        
+
+        //Connection to mongoDB Atlas
+        //public Database(string dbName = "ToDoWebAppDB")
+        //{
+        //    MongoClient client = new MongoClient("mongodb+srv://Vahid:Vahid26112@cluster0.yhcpv.mongodb.net/ToDoWebAppDB?retryWrites=true&w=majority");
+        //    db = client.GetDatabase(dbName);
+        //}
+
         internal bool CheckIdAccountExists(Account account)
         {
             var collection = db.GetCollection<Account>(ACCOUNT_COLLECTION);
